@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: Product Catalog
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/product-catalog-db}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:example}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# Configuracoes de log
+logging:
+  pattern:
+    console: '%clr(%d{dd-MM-yyyy HH:mm:ss}){faint} %clr(%5p) %clr([%t]){faint} %clr(%-40.40logger){cyan} %clr(:){yellow} %m%n'
+  file:
+    name: app.log
+  level:
+    root: info
+    br:
+      com:
+        bgrbarbosa:
+          product-catalog: info
