@@ -14,7 +14,7 @@ public record ProductDTO(
         UUID uuid,
 
         @NotBlank(message = Messages.NOT_BLANK)
-        @Size(min = 5, max = 50, message = Messages.FIELD_SIZE_MESSAGE)
+        @Size(min = 3, max = 50, message = Messages.FIELD_SIZE_MESSAGE)
         String nameProduct,
 
         @NotBlank(message = Messages.NOT_BLANK)

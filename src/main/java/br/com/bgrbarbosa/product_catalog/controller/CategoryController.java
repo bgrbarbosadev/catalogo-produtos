@@ -5,8 +5,13 @@ import br.com.bgrbarbosa.product_catalog.model.Category;
 import br.com.bgrbarbosa.product_catalog.model.dto.CategoryDTO;
 import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import br.com.bgrbarbosa.product_catalog.service.CategoryService;
+import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,9 +29,12 @@ public class CategoryController {
 	private final CategoryMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<List<CategoryDTO>> findAll() {
-		List<CategoryDTO> list = mapper.parseToListDTO(service.findAll());
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<Page<CategoryDTO>> findAll(
+			@PageableDefault(page = 0, size = 10, sort = "uuid", direction = Sort.Direction.ASC) Pageable page){
+
+		List<CategoryDTO> listDTO = mapper.parseToListDTO(service.findAll(page));
+		Page<CategoryDTO> pageDTO = mapper.toPageDTO(listDTO, page);
+		return ResponseEntity.ok(pageDTO);
 	}
 
 	@GetMapping(value = "/{uuid}")

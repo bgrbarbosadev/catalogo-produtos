@@ -8,6 +8,7 @@ import br.com.bgrbarbosa.product_catalog.service.exception.IllegalArgumentExcept
 import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Category> findAll(Pageable page) {
         return repository.findAll();
     }
 

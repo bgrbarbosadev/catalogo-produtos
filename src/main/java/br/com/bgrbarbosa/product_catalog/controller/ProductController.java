@@ -2,10 +2,16 @@ package br.com.bgrbarbosa.product_catalog.controller;
 
 import br.com.bgrbarbosa.product_catalog.controller.mapper.ProductMapper;
 import br.com.bgrbarbosa.product_catalog.model.Product;
+import br.com.bgrbarbosa.product_catalog.model.dto.CategoryDTO;
 import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import br.com.bgrbarbosa.product_catalog.service.ProductService;
+import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,9 +29,13 @@ public class ProductController {
 	private final ProductMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<List<ProductDTO>> findAll() {
-		List<ProductDTO> list = mapper.parseToListDTO(service.findAll());
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<Page<ProductDTO>> findAll(
+			ProductFilter filter,
+			@PageableDefault(page = 0, size = 10, sort = "uuid", direction = Sort.Direction.ASC) Pageable page){
+
+		List<ProductDTO> listDTO = mapper.parseToListDTO(service.findAll(page, filter));
+		Page<ProductDTO> pageDTO = mapper.toPageDTO(listDTO, page);
+		return ResponseEntity.ok(pageDTO);
 	}
 
 	@GetMapping(value = "/{uuid}")

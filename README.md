@@ -6,7 +6,7 @@ Próximos passos:
 
 1) Adicionar log na aplicação   ok       
 2) validação e mensagens padrão ok
-3) pesquisa avançada com specification
+3) pesquisa avançada com specification e pageable ok
 4) envio de catálogo via email
 5) relatório com pdf (jasper)
 6) segurança

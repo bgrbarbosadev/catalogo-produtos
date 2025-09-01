@@ -3,6 +3,9 @@ package br.com.bgrbarbosa.product_catalog.controller.mapper;
 import br.com.bgrbarbosa.product_catalog.model.Product;
 import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,5 +18,11 @@ public interface ProductMapper {
 
     List<ProductDTO> parseToListDTO(List<Product>list);
 
-    List<Product> parseToList(List<ProductDTO>list);
+    default Page<ProductDTO> toPageDTO(List<ProductDTO> list, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+        List<ProductDTO> pageContent = list.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageable, list.size());
+    }
 }

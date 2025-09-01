@@ -5,7 +5,10 @@ import br.com.bgrbarbosa.product_catalog.model.Product;
 import br.com.bgrbarbosa.product_catalog.repository.ProductRepository;
 import br.com.bgrbarbosa.product_catalog.service.ProductService;
 import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
+import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +26,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        return repository.findAll();
+    public List<Product> findAll(Pageable page, ProductFilter filter) {
+        return repository.findAll(filter.toSpecification());
     }
 
     @Override
