@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public record CategoryDTO(
 
-        UUID uuid,
+        UUID uuidCategory,
 
         @NotBlank(message = Messages.NOT_BLANK)
         @Size(min = 3, max = 50, message = Messages.FIELD_SIZE_MESSAGE)

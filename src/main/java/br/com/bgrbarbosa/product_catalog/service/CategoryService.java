@@ -15,6 +15,8 @@ public interface CategoryService {
 
     List<Category> findAll(Pageable page);
 
+    List<Category> findAll();
+
     Category findById(UUID uuid);
 
     void delete(UUID uuid);

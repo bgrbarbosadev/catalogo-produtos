@@ -35,6 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public Category findById(UUID uuid) {
         return repository.findById(uuid).orElseThrow(
                 () -> new ResourceNotFoundException(Messages.RESOURCE_NOT_FOUND)
@@ -51,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category update(Category category) {
-        Category aux = repository.findById(category.getUuid()).orElseThrow(
+        Category aux = repository.findById(category.getUuidCategory()).orElseThrow(
                 () -> new ResourceNotFoundException(Messages.RESOURCE_NOT_FOUND)
         );
         aux.setNameCategory(category.getNameCategory());

@@ -21,7 +21,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID uuidCategory;
 
     @Column
     private String nameCategory;

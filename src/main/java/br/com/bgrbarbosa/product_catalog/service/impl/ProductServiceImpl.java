@@ -7,7 +7,6 @@ import br.com.bgrbarbosa.product_catalog.service.ProductService;
 import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAll(ProductFilter filter) {
+        return repository.findAll(filter.toSpecification());
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public Product findById(UUID uuid) {
         return repository.findById(uuid).orElseThrow(
                 () -> new ResourceNotFoundException(Messages.RESOURCE_NOT_FOUND)
@@ -47,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Product product) {
-        Product aux = repository.findById(product.getUuid()).orElseThrow(
+        Product aux = repository.findById(product.getUuidProduct()).orElseThrow(
                 () -> new ResourceNotFoundException(Messages.RESOURCE_NOT_FOUND)
         );
         aux.setNameProduct(product.getNameProduct());
