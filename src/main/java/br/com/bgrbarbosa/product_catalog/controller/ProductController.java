@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -42,6 +43,7 @@ public class ProductController {
 	private final ProductServiceReport productReport;
 
 	@GetMapping
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			ProductFilter filter,
 			@PageableDefault(page = 0, size = 10, sort = "uuid", direction = Sort.Direction.ASC) Pageable page){
@@ -52,12 +54,14 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/{uuid}")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<ProductDTO> findById(@PathVariable UUID uuid) {
 		ProductDTO dto = mapper.parseToDto(service.findById(uuid));
 		return ResponseEntity.ok().body(dto);
 	}
 
 	@GetMapping("/report")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public void gerarRelatorio(
 			HttpServletResponse response,
 			ProductFilter filter,
@@ -115,6 +119,7 @@ public class ProductController {
 
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public ResponseEntity<ProductDTO> insert(@RequestBody @Valid ProductDTO dto) {
 		Product result = service.insert(mapper.parseToEntity(dto));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{uuid}")
@@ -123,6 +128,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/enviar-email")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public String enviarEmail(@RequestParam String destination) {
 		try {
 			emailService.sendingProductListByEmail(destination);
@@ -134,12 +140,14 @@ public class ProductController {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public ResponseEntity<ProductDTO> update(@RequestBody @Valid ProductDTO dto) {
 		Product result = service.update(mapper.parseToEntity(dto));
 		return ResponseEntity.ok().body(mapper.parseToDto(result));
 	}
 
 	@DeleteMapping(value = "/{uuid}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
 		service.delete(uuid);
 		return ResponseEntity.noContent().build();

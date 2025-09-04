@@ -8,9 +8,8 @@ Próximos passos:
 2) validação e mensagens padrão ok
 3) pesquisa avançada com specification e pageable ok
 4) envio de catálogo via email ok
-5) relatório com pdf (itext)
-6) segurança
-7) versionamento da api
+5) relatório com pdf (jasper) ok
+6) segurança ok
 8) documentação swagger
 9) testes
 10) docker

@@ -32,10 +32,10 @@ public class Product {
     @Column
     private String urlProduct;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column
     private LocalDate dtCreated;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    @Column
     private LocalDate dtUpdated;
 
     @ManyToOne
