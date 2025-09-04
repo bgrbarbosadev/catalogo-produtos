@@ -3,8 +3,15 @@ package br.com.bgrbarbosa.product_catalog.controller;
 import br.com.bgrbarbosa.product_catalog.controller.mapper.CategoryMapper;
 import br.com.bgrbarbosa.product_catalog.model.Category;
 import br.com.bgrbarbosa.product_catalog.model.dto.CategoryDTO;
+import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import br.com.bgrbarbosa.product_catalog.service.CategoryService;
+import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +43,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "/category")
 @RequiredArgsConstructor
+@Tag(name = "Category", description = "Contém as operações para controle de cadastro de categorias.")
 public class CategoryController {
 
 	private final CategoryService service;
@@ -43,6 +51,13 @@ public class CategoryController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(
+			summary = "Listar todas as Categorias",
+			description = "Listar todas as categorias cadastradas",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Lista todas as categorias cadastradas",
+							content = @Content(mediaType = "application/json"))
+			})
 	public ResponseEntity<Page<CategoryDTO>> findAll(
 			@PageableDefault(page = 0, size = 10, sort = "uuid", direction = Sort.Direction.ASC) Pageable page){
 
@@ -53,6 +68,13 @@ public class CategoryController {
 
 	@GetMapping(value = "/{uuid}")
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(summary = "Recuperar uma categoria pelo id", description = "Recuperar uma categoria pelo id",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Categoria recuperada com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Categoria não encontrada",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<CategoryDTO> findById(@PathVariable UUID uuid) {
 		CategoryDTO dto = mapper.parseToDto(service.findById(uuid));
 		return ResponseEntity.ok().body(dto);
@@ -60,6 +82,11 @@ public class CategoryController {
 
 	@GetMapping("/report")
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(summary = "Gerar relatórios de categorias usando filtros", description = "Gerar relatórios de categorias usando filtros",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDTO.class)))
+			})
 	public void gerarRelatorio(
 			HttpServletResponse response,
 			ProductFilter filter,
@@ -117,6 +144,11 @@ public class CategoryController {
 	
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Cadastrar uma nova categoria", description = "Recurso para cadastrar categorias",
+			responses = {
+					@ApiResponse(responseCode = "201", description = "Categoria cadastrada com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDTO.class)))
+			})
 	public ResponseEntity<CategoryDTO> insert(@RequestBody @Valid CategoryDTO dto) {
 		Category result = service.insert(mapper.parseToEntity(dto));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{uuid}")
@@ -126,6 +158,13 @@ public class CategoryController {
 
 	@PutMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Atualizar categoria", description = "Atualizar registro de categoria",
+			responses = {
+					@ApiResponse(responseCode = "204", description = "Categoria atualizado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Categoria não encontrada",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<CategoryDTO> update(@RequestBody @Valid CategoryDTO dto) {
 		Category result = service.update(mapper.parseToEntity(dto));
 		return ResponseEntity.ok().body(mapper.parseToDto(result));
@@ -133,6 +172,13 @@ public class CategoryController {
 
 	@DeleteMapping(value = "/{uuid}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Deleção de categoria", description = "Deletar uma categoria pelo ID",
+			responses = {
+					@ApiResponse(responseCode = "202", description = "Categoria deletada com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Categoria não encontrada",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
 		service.delete(uuid);
 		return ResponseEntity.noContent().build();

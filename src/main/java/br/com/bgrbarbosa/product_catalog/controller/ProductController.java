@@ -6,7 +6,13 @@ import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import br.com.bgrbarbosa.product_catalog.service.EmailService;
 import br.com.bgrbarbosa.product_catalog.service.ProductService;
 import br.com.bgrbarbosa.product_catalog.service.ProductServiceReport;
+import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +41,7 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/product")
 @RequiredArgsConstructor
+@Tag(name = "Product", description = "Contém as operações para controle de cadastro de produtos.")
 public class ProductController {
 
 	private final ProductService service;
@@ -44,6 +51,13 @@ public class ProductController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(
+			summary = "Listar todos os Produtos",
+			description = "Listar todos os produtos cadastrados",
+			responses = {
+				@ApiResponse(responseCode = "200", description = "Lista todos os produtos cadastrados",
+					content = @Content(mediaType = "application/json"))
+			})
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			ProductFilter filter,
 			@PageableDefault(page = 0, size = 10, sort = "uuid", direction = Sort.Direction.ASC) Pageable page){
@@ -55,6 +69,13 @@ public class ProductController {
 
 	@GetMapping(value = "/{uuid}")
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(summary = "Recuperar um produto pelo id", description = "Recuperar um produto pelo id",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Produto recuperado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Produto não encontrado",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<ProductDTO> findById(@PathVariable UUID uuid) {
 		ProductDTO dto = mapper.parseToDto(service.findById(uuid));
 		return ResponseEntity.ok().body(dto);
@@ -62,6 +83,11 @@ public class ProductController {
 
 	@GetMapping("/report")
 	@PreAuthorize("hasRole('ROLE_USER')")
+	@Operation(summary = "Gerar relatórios de produtos usando filtros", description = "Gerar relatórios de produtos usando filtros",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class)))
+			})
 	public void gerarRelatorio(
 			HttpServletResponse response,
 			ProductFilter filter,
@@ -120,6 +146,11 @@ public class ProductController {
 
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Cadastra um novo produto", description = "Recurso para cadastrar produtos",
+			responses = {
+					@ApiResponse(responseCode = "201", description = "Produto cadastrado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class)))
+			})
 	public ResponseEntity<ProductDTO> insert(@RequestBody @Valid ProductDTO dto) {
 		Product result = service.insert(mapper.parseToEntity(dto));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{uuid}")
@@ -129,6 +160,11 @@ public class ProductController {
 
 	@PostMapping("/enviar-email")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Envia relatório de relatório", description = "Envia relatório de produtos por email",
+			responses = {
+					@ApiResponse(responseCode = "201", description = "Email enviado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class)))
+			})
 	public String enviarEmail(@RequestParam String destination) {
 		try {
 			emailService.sendingProductListByEmail(destination);
@@ -141,6 +177,13 @@ public class ProductController {
 
 	@PutMapping
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Atualizar produto", description = "Atualizar registro de produto",
+			responses = {
+					@ApiResponse(responseCode = "204", description = "Produto atualizado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Produto não encontrado",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<ProductDTO> update(@RequestBody @Valid ProductDTO dto) {
 		Product result = service.update(mapper.parseToEntity(dto));
 		return ResponseEntity.ok().body(mapper.parseToDto(result));
@@ -148,6 +191,13 @@ public class ProductController {
 
 	@DeleteMapping(value = "/{uuid}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@Operation(summary = "Deleção de produto", description = "Deletar um produto pelo ID",
+			responses = {
+					@ApiResponse(responseCode = "202", description = "Produto deletado com sucesso",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
+					@ApiResponse(responseCode = "404", description = "Produto não encontrado",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResourceNotFoundException.class)))
+			})
 	public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
 		service.delete(uuid);
 		return ResponseEntity.noContent().build();
