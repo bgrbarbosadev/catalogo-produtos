@@ -6,6 +6,7 @@ import br.com.bgrbarbosa.product_catalog.repository.ProductRepository;
 import br.com.bgrbarbosa.product_catalog.service.ProductService;
 import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
 
     @Override
+    @Transactional
     public Product insert(Product product) {
         return repository.save(product);
     }

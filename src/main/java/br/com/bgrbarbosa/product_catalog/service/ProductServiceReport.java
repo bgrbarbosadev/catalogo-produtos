@@ -23,7 +23,6 @@ import java.util.Map;
 public class ProductServiceReport {
 
     private final ResourceLoader resourceLoader;
-    //private final DataSource dataSource;
 
     private Map<String, Object> params = new HashMap<>();
 
@@ -34,20 +33,6 @@ public class ProductServiceReport {
         this.params.put("REPORT_LOCALE", new Locale("pt", "BR"));
         this.params.put(key, value);
     }
-
-//    public byte[] gerarPdf() {
-//        byte[] bytes = null;
-//        try {
-//            Resource resource = resourceLoader.getResource(JASPER_DIRETORIO.concat("Produto.jasper"));
-//            InputStream stream = resource.getInputStream();
-//            JasperPrint print = JasperFillManager.fillReport(stream, params, dataSource.getConnection());
-//            bytes = JasperExportManager.exportReportToPdf(print);
-//        } catch (IOException | JRException | SQLException e) {
-//            log.error("Jasper Reports ::: ", e.getCause());
-//            throw new RuntimeException(e);
-//        }
-//        return bytes;
-//    }
 
     /**
      * Gera um relatório PDF a partir de uma lista de objetos.

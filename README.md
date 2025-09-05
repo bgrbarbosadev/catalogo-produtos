@@ -10,6 +10,6 @@ Próximos passos:
 4) envio de catálogo via email ok
 5) relatório com pdf (jasper) ok
 6) segurança ok
-8) documentação swagger
+8) documentação swagger ok
 9) testes
 10) docker

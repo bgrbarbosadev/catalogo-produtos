@@ -3,11 +3,15 @@ package br.com.bgrbarbosa.product_catalog.specification.filter;
 import br.com.bgrbarbosa.product_catalog.model.Product;
 import static br.com.bgrbarbosa.product_catalog.specification.ProductSpec.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductFilter {
 
     private String nameProduct;

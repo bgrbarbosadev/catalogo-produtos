@@ -44,4 +44,11 @@ logging:
       com:
         bgrbarbosa:
           product-catalog: info
+sonar:
+  project:
+    key: "catalogo-produtos"
+    name: "catalogo-produtos"
+    version: "1.0"
+  host:
+    url: "http://localhost:9000"
 

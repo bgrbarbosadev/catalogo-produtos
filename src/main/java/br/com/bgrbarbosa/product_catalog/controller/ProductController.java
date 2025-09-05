@@ -145,7 +145,7 @@ public class ProductController {
 
 
 	@PostMapping
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "Cadastra um novo produto", description = "Recurso para cadastrar produtos",
 			responses = {
 					@ApiResponse(responseCode = "201", description = "Produto cadastrado com sucesso",
@@ -159,7 +159,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/enviar-email")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "Envia relatório de relatório", description = "Envia relatório de produtos por email",
 			responses = {
 					@ApiResponse(responseCode = "201", description = "Email enviado com sucesso",
@@ -176,7 +176,7 @@ public class ProductController {
 	}
 
 	@PutMapping
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "Atualizar produto", description = "Atualizar registro de produto",
 			responses = {
 					@ApiResponse(responseCode = "204", description = "Produto atualizado com sucesso",
@@ -190,7 +190,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping(value = "/{uuid}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "Deleção de produto", description = "Deletar um produto pelo ID",
 			responses = {
 					@ApiResponse(responseCode = "202", description = "Produto deletado com sucesso",

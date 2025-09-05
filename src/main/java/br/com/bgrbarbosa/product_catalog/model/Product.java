@@ -39,7 +39,7 @@ public class Product {
     private LocalDate dtUpdated;
 
     @ManyToOne
-    @JoinColumn(name = "category_uuid")
+    @JoinColumn(name = "category_uuid", nullable = false)
     private Category categoryProduct;
 
     @PrePersist
