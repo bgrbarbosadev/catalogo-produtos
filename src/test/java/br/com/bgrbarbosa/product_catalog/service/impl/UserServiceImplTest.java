@@ -60,6 +60,7 @@ class UserServiceImplTest {
 
     private String password;
     PageRequest pageable;
+
     @BeforeEach
     void setUp() {
         roleAdmin = new Role(uuidUserAdmin, "ROLE_ADMIN");

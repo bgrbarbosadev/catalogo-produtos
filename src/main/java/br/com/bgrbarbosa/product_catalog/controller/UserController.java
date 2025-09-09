@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +61,7 @@ public class UserController {
 		return ResponseEntity.ok(pageDTO);
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{uuid}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@Operation(summary = "Recuperar um usuario pelo id", description = "Recuperar um usuario pelo id",
 			responses = {
@@ -102,7 +103,7 @@ public class UserController {
 		return ResponseEntity.ok().body(mapper.parseToDto(result));
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{uuid}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "Deleção de usuario", description = "Deletar um usuario pelo ID",
 			responses = {
@@ -122,12 +123,12 @@ public class UserController {
 					@ApiResponse(responseCode = "201", description = "Token obtido com sucesso",
 							content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
 			})
-	public ResponseEntity login(@RequestBody UserRequestDTO request){
+	public ResponseEntity<Object> login(@RequestBody UserRequestDTO request){
 		User user = service.loadUserByUsername(request.email());
 		if(passwordEncoder.matches(request.password(), user.getPassword())) {
 			String token = this.tokenService.generateToken(user);
 			return ResponseEntity.ok(new UserResponseDTO(user.getFirstName(), token));
 		}
-		return ResponseEntity.badRequest().build();
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(request);
 	}
 } 

@@ -230,31 +230,44 @@ class ProductServiceImplTest {
     @Test
     @DisplayName("Should set dtCreated date before persisting")
     void prePersistShouldSetDtCreated() {
+        // Given
+        Product product = new Product();
+        product.setUuidProduct(UUID.randomUUID());
+        product.setNameProduct("Product pre persiste");
+        product.setDescriptionProduct("Description");
+        product.setPriceProduct(200.00);
+        product.setUrlProduct("http://url");
+        product.setCategoryProduct(category);
 
-        assertNull(p1.getDtCreated(), "dtCreated should be null before calling prePersist");
+        assertNull(product.getDtCreated(), "dtCreated should be null before calling prePersist");
 
         // When
-        p1.prePersist();
+        product.prePersist();
 
         // Then
-        assertNotNull(p1.getDtCreated(), "dtCreated should not be null after prePersist");
-        assertEquals(LocalDate.now(), p1.getDtCreated(), "dtCreated should be equal to the current date");
+        assertNotNull(product.getDtCreated(), "dtCreated should not be null after prePersist");
+        assertEquals(LocalDate.now(), product.getDtCreated(), "dtCreated should be equal to the current date");
     }
 
     @Test
     @DisplayName("Should set dtUpdated date before updating")
     void preUpdateShouldSetDtUpdated() {
         // Given
+        Product product = new Product();
+        product.setUuidProduct(UUID.randomUUID());
+        product.setNameProduct("Product pre persiste");
+        product.setDescriptionProduct("Description");
+        product.setPriceProduct(200.00);
+        product.setUrlProduct("http://url");
+        product.setCategoryProduct(category);
 
-        p1.prePersist(); // Simulating a creation first
-
-        assertNull(p1.getDtUpdated(), "dtUpdated should be null before calling preUpdate");
+        assertNull(product.getDtUpdated(), "dtUpdated should be null before calling preUpdate");
 
         // When
-        p1.preUpdate();
+        product.preUpdate();
 
         // Then
-        assertNotNull(p1.getDtUpdated(), "dtUpdated should not be null after preUpdate");
-        assertEquals(LocalDate.now(), p1.getDtUpdated(), "dtUpdated should be equal to the current date");
+        assertNotNull(product.getDtUpdated(), "dtUpdated should not be null after preUpdate");
+        assertEquals(LocalDate.now(), product.getDtUpdated(), "dtUpdated should be equal to the current date");
     }
 }

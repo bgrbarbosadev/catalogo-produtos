@@ -40,7 +40,7 @@ class ProductServiceReportTest {
     @InjectMocks
     private ProductServiceReport serviceReport;
 
-    private final String JASPER_DIRETORIO = "/caminho/do/seu/diretorio/";
+    private final String JASPER_DIRETORIO = "/resources/reports/";
 
     @Test
     @DisplayName("Deve adicionar os parâmetros padrão e o parâmetro fornecido ao mapa")

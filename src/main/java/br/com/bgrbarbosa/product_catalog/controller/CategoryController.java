@@ -3,7 +3,6 @@ package br.com.bgrbarbosa.product_catalog.controller;
 import br.com.bgrbarbosa.product_catalog.controller.mapper.CategoryMapper;
 import br.com.bgrbarbosa.product_catalog.model.Category;
 import br.com.bgrbarbosa.product_catalog.model.dto.CategoryDTO;
-import br.com.bgrbarbosa.product_catalog.model.dto.ProductDTO;
 import br.com.bgrbarbosa.product_catalog.service.CategoryService;
 import br.com.bgrbarbosa.product_catalog.service.exception.ResourceNotFoundException;
 import br.com.bgrbarbosa.product_catalog.specification.filter.ProductFilter;
