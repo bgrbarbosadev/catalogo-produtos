@@ -4,7 +4,7 @@ spring:
   application:
     name: Product Catalog
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/product-catalog-db}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:example}
     driver-class-name: org.postgresql.Driver
