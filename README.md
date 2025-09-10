@@ -13,19 +13,18 @@ Containerização: Docker
 Para facilitar a configuração e garantir um ambiente de desenvolvimento consistente, utilizamos o Docker. Siga estes passos para subir a aplicação:
 
 1) Clone o repositório
+git clone [https://docs.github.com/pt/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github]    (https://github.com/bgrbarbosadev/catalogo-produtos.git)
 
-  1.1) git clone [https://docs.github.com/pt/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github]    (https://github.com/bgrbarbosadev/catalogo-produtos.git)
+2) cd catalogo-produtos
 
-  1.2) cd catalogo-produtos
-
-  1.3) Construa e inicie os contêineres:
+3) Construa e inicie os contêineres:
 
   Bash
   
   docker-compose up --build -d
   Este comando irá construir as imagens Docker (se necessário) e iniciar os contêineres para a aplicação e o banco de dados.
 
-  1.4) Criar uma conexão com o banco e rodar o sql abaixo para o insert do usuário padrão para o inicio das atividades:
+4) Criar uma conexão com o banco e rodar o sql abaixo para o insert do usuário padrão para o inicio das atividades:
 
   Dados da conexão: 
   
@@ -50,29 +49,23 @@ Para facilitar a configuração e garantir um ambiente de desenvolvimento consis
 Acesse a API:
 Após os contêineres estarem rodando, a API estará disponível em http://localhost:8080. Consulte a seção de "Recursos" para ver as coleções de endpoints.
 
-📚 Recursos e Documentação
+📚 Recursos utilizados no desenvolvimento e Documentação
 Aqui você encontrará coleções de requisições para facilitar a interação com a API, além de links úteis para a documentação.
 
-Postman Collections:
-
-Para a utilização da api, dentro do raiz do diretório encontramos a collection utilizada na aplicação (postman_collection.json)
-
+# Recursos
+1) Logs com log4j       
+2) Validação e mensagens padrão com spring validation
+3) Pesquisa avançada com specification e filtros criteria com retorno paginado
+4) Envio de catálogo via email com JavaMailSender
+5) Geração de relatórios com jasper-report
+6) Autenticação e autorização com spring security com oauth0
+8) Documentação de API com swagger
+9) Testes unitários e de integração com MockMVC e Mockito
+10) Docker
+    
+Postman Collections: para a utilização da api, dentro do raiz do diretório encontramos a collection utilizada na aplicação (postman_collection.json)
 Documentação da API (Swagger/OpenAPI): http://localhost:8080/swagger-ui/index.html#/
 
 Espero que este README atenda às suas necessidades! Você pode personalizá-lo ainda mais adicionando detalhes sobre as rotas principais, exemplos de requisições/respostas, ou informações sobre contribuição.
 
-# catalogo-produtos
-Projeto de Catálogo de Produtos
 
-
-Próximos passos:
-
-1) Adicionar log na aplicação   ok       
-2) validação e mensagens padrão ok
-3) pesquisa avançada com specification e pageable ok
-4) envio de catálogo via email ok
-5) relatório com pdf (jasper) ok
-6) segurança ok
-8) documentação swagger ok
-9) testes
-10) docker
