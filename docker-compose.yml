@@ -29,8 +29,8 @@ services:
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=example
       - HOST_MAIL=smtp.gmail.com
-      - HOST_PASSWORD=pwffnvfhhejcepr
-      - HOST_USERNAME=bgrbarbosa@gmail.com
+      - HOST_PASSWORD=token do app criado no gmail
+      - HOST_USERNAME=user do gmail
       - PORT=587
       - SECRET_TOKEN=myapp
       - WITH_ISSUER=myapp
